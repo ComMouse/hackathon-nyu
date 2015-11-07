@@ -18,6 +18,7 @@ var game_file_list = [
 	"bin-debug/scene/MainScene.js",
 	"bin-debug/scene/SceneManager.js",
 	"bin-debug/scene/TitleScene.js",
+	"bin-debug/view/GridView.js",
 	//----auto game_file_list end----
 ];
 

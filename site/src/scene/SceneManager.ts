@@ -16,7 +16,7 @@ module scene {
             this.stage = this.main.stage;
         }
 
-        public static transfer(scene:BaseScene):void {
+        public static transfer(scene):void {
             console.log(scene);
             this.main.changeScene(scene);
         }
