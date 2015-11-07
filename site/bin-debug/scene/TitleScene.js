@@ -14,6 +14,16 @@ var scene;
             this.createTitle();
             this.createButtons();
             this.registerEvents();
+            this.grids = new model.GridMap(20, 10);
+            this.grids.center(10, 5);
+            for (var i = 0; i < this.grids.map.length; i++) {
+                var row = this.grids.map[i];
+                var str = '';
+                for (var j = 0; j < row.length; j++) {
+                    str += row[j].envLv + '\t' + '\t';
+                }
+                console.log(str);
+            }
         };
         p.update = function () {
             // TODO
@@ -63,7 +73,16 @@ var scene;
             this.btnText.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouch, this);
         };
         p.onTouch = function () {
-            console.log('touched!');
+            console.log('a');
+            this.grids.expand();
+            for (var i = 0; i < this.grids.map.length; i++) {
+                var row = this.grids.map[i];
+                var str = '';
+                for (var j = 0; j < row.length; j++) {
+                    str += row[j].bioCount + '\t\t';
+                }
+                console.log(str);
+            }
             //scene.SceneManager.transfer(MainScene);
         };
         return TitleScene;
