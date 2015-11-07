@@ -1,3 +1,9 @@
+struct creature {
+    int gene[20];
+    int size;
+    double growRate;
+};
+
 struct grid {
     creature clist[200];
     int envlv[20];
@@ -40,3 +46,4 @@ struct grid {
         }
     }
 };
+
