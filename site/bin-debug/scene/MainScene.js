@@ -21,7 +21,8 @@ var scene;
         };
         p.createGrids = function () {
             this.grids = new model.GridMap(160, 90);
-            this.grids.center(Math.floor(Math.random() * 160), Math.floor(Math.random() * 90));
+            this.grids.center(Math.floor(Math.random() * 160), Math.floor(Math.random() * 90), 0);
+            this.grids.center(Math.floor(Math.random() * 160), Math.floor(Math.random() * 90), 1);
         };
         p.createMap = function () {
             var w = scene.SceneManager.stage.stageWidth / this.grids.width;

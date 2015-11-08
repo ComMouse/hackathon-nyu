@@ -11,15 +11,16 @@ var game_file_list = [
 	"bin-debug/DemoMain.js",
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
-	"bin-debug/model/GridMap.js",
-	"bin-debug/model/GridModel.js",
+	"bin-debug/model/gridmap.js",
+	"bin-debug/model/gridmodel.js",
 	"bin-debug/model/PerlinNoise.js",
 	"bin-debug/resource/ResourceManager.js",
 	"bin-debug/scene/BaseScene.js",
-	"bin-debug/scene/MainScene.js",
+	"bin-debug/scene/mainscene.js",
 	"bin-debug/scene/SceneManager.js",
 	"bin-debug/scene/TitleScene.js",
 	"bin-debug/view/GridView.js",
+	"bin-debug/model/creature.js",
 	//----auto game_file_list end----
 ];
 
@@ -53,7 +54,7 @@ egret_native.egretStart = function () {
 		contentWidth: 1280,
 		contentHeight: 720,
 		showPaintRect: false,
-		showFPS: true,
+		showFPS: false,
 		fpsStyles: "x:0,y:0,size:30,textColor:0x00c200,bgAlpha:0.9",
 		showLog: false,
 		logFilter: "",

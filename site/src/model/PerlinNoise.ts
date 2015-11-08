@@ -18,8 +18,8 @@ module model {
                 for (var j = 0; j < height; j++) {
                     var grid = new GridModel();
                     grid.envLv = Math.round(Math.random() * 20) - 10;
-                    grid.bioCount = 0;
-                    grid.newCount = 0;
+                    grid.bioCount = [0, 0];
+                    grid.newCount = [0, 0];
                     grid.x = j;
                     grid.y = i;
                     row[j] = grid;

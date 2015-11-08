@@ -21,7 +21,7 @@ module view {
 
             this.touchEnabled = true;
             this.addEventListener(egret.TouchEvent.TOUCH_TAP, function (event:egret.TouchEvent) {
-                this.grid.bioCount += 2;
+                this.grid.bioCount[Math.floor(Math.random() * 2)] += 2;
                 this.update();
             }, this);
         }
@@ -40,7 +40,7 @@ module view {
             this.text.textColor = 0xffffff;
             this.text.textAlign = 'middle';
             this.text.size = 10;
-            this.text.text = this.grid.bioCount;
+            this.text.text = Math.max(this.grid.bioCount[0], this.grid.bioCount[1]);
             this.text.width = this._width;
             this.text.height = this._height;
             this.text.x = 4;
@@ -61,7 +61,7 @@ module view {
         private updateColor():void {
             var color = this.getColor(this.grid);
             if (color != this._color) {
-                console.log('Repaint!');
+                //console.log('Repaint!');
                 this.box.graphics.clear();
                 this.box.graphics.beginFill(color);
                 //console.log(this.getColor(this.grid));
@@ -74,9 +74,19 @@ module view {
         private getColor(grid) {
             var alpha = (grid.envLv + 10) / 20;
             var color = Math.round((0x009900) * alpha + (0x0055ff) * (1 - alpha));
-            if (grid.bioCount > 1) {
-                var alpha = Math.min(grid.bioCount / 10000, 1);
-                return Math.round(0xff0000 * alpha + 0xFF7373 * (1 - alpha));
+            if (grid.bioCount[0] > 1 || grid.bioCount[1] > 1) {
+                var num = Math.max(grid.bioCount[0], grid.bioCount[1]);
+                var alpha = Math.min(num / 10000, 1);
+                var baseColor = 0;
+                var toColor = 0;
+                if (grid.bioCount[0] < grid.bioCount[1]) {
+                    baseColor = 0x9900ff;
+                    toColor = 0x9966ff;
+                } else {
+                    baseColor = 0xff0000;
+                    toColor = 0xFF7373;
+                }
+                return Math.round(baseColor * alpha + toColor * (1 - alpha));
             } else {
                 return color;
             }

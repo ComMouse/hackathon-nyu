@@ -4,8 +4,8 @@
 module model {
     export class GridModel {
         envLv:number;
-        bioCount:number;
-        newCount:number;
+        bioCount:Array<number>;
+        newCount:Array<number>;
         x:number;
         y:number;
         isShown:Boolean;
