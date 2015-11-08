@@ -20,9 +20,9 @@ module model {
         constructor(width, height) {
             this.width = width;
             this.height = height;
-            this.growRate = [1.1, 1.12];
+            this.growRate = [1.1, 1.3];
             this.total = [0, 0];
-            this.limit = [10000, 10000];
+            this.limit = [10000, 10000000];
             this.timer = [0, 0];
             this.suitEnv = [0, 0];
 
@@ -51,6 +51,8 @@ module model {
                     grid.newCount = [0, 0];
                     grid.x = j;
                     grid.y = i;
+                    grid.flag = false;
+                    grid.isShown = false;
                     row.push(grid);
                 }
                 this.grids.push(row);
@@ -91,7 +93,7 @@ module model {
                 this.timer[0] = 0;
                 this.limit[0] *= 1.1;
             }
-            if (this.total[1] > this.limit[1] && ++this.timer[1] > 50) {
+            if (this.total[1] > this.limit[1] && ++this.timer[1] > 20) {
                 this.timer[1] = 0;
                 this.limit[1] *= 1.1;
             }
@@ -141,7 +143,8 @@ module model {
                 newGrid.newCount[0] += Math.round(grid.bioCount[0] * 0.1 * (Math.random() * 0.1 + 0.95));
             }
             if (newGrid.bioCount[1] <= grid.bioCount[1]) {
-                newGrid.newCount[1] += Math.round(grid.bioCount[1] * 0.1 * (Math.random() * 0.1 + 0.95));
+                var rate = (dir == GridMap.UP || dir == GridMap.LEFT) ? 2 : 1;
+                newGrid.newCount[1] += Math.round(grid.bioCount[1] * 0.2 * rate * (Math.random() * 0.2 + 0.9));
             }
             //grid.newCount -= Math.round(grid.bioCount * 0.4);
         }
@@ -163,11 +166,11 @@ module model {
 
             var liveRate = this.suitEnv[1];
             var rate = 1;
-            if (Math.abs(grid.envLv - liveRate) > 2) {
+            if (Math.abs(grid.envLv - liveRate) > 4) {
                 rate = 0;
             } else if (Math.abs(grid.envLv - liveRate) > 1) {
                 //console.log();
-                rate = Math.exp(-Math.pow(2, liveRate - grid.envLv));
+                rate = Math.exp(-Math.pow(1.4, liveRate - grid.envLv));
                 rate = Math.min(rate, 1);
                 //console.log(rate);
             } else {
@@ -220,6 +223,10 @@ module model {
                     return this.grids[grid.y][grid.x + 1];
                     break;
             }
+        }
+
+        private flag(x, y):void {
+            this.grids[y][x].flag = true;
         }
     }
 }

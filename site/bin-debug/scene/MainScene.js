@@ -21,8 +21,9 @@ var scene;
         };
         p.createGrids = function () {
             this.grids = new model.GridMap(160, 90);
-            this.grids.center(Math.floor(Math.random() * 160), Math.floor(Math.random() * 90), 0);
-            this.grids.center(Math.floor(Math.random() * 160), Math.floor(Math.random() * 90), 1);
+            this.grids.center(10, 10, 0);
+            this.grids.center(150, 80, 1);
+            this.grids.flag(80, 45);
         };
         p.createMap = function () {
             var w = scene.SceneManager.stage.stageWidth / this.grids.width;
@@ -35,6 +36,7 @@ var scene;
                     row.push(item);
                     item.x = j * w;
                     item.y = i * h;
+                    item.cacheAsBitmap = true;
                     this.addChild(item);
                 }
                 this.map.push(row);

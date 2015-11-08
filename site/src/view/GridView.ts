@@ -21,7 +21,7 @@ module view {
 
             this.touchEnabled = true;
             this.addEventListener(egret.TouchEvent.TOUCH_TAP, function (event:egret.TouchEvent) {
-                this.grid.bioCount[Math.floor(Math.random() * 2)] += 2;
+                this.grid.bioCount[0] += 2;
                 this.update();
             }, this);
         }
@@ -50,7 +50,7 @@ module view {
         }
 
         private update():void {
-            this.visible = this.grid.isShown;
+            this.visible = this.grid.isShown || this.grid.flag;
             if (!this.visible) {
                 return;
             }
@@ -72,6 +72,9 @@ module view {
         }
 
         private getColor(grid) {
+            if (grid.flag) {
+                return 0xffffff;
+            }
             var alpha = (grid.envLv + 10) / 20;
             var color = Math.round((0x009900) * alpha + (0x0055ff) * (1 - alpha));
             if (grid.bioCount[0] > 1 || grid.bioCount[1] > 1) {

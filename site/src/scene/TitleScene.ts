@@ -72,7 +72,7 @@ module scene {
         }
 
         private onTouch() {
-            scene.SceneManager.transfer(MainScene);
+            scene.SceneManager.transfer(StartScene);
         }
     }
 }

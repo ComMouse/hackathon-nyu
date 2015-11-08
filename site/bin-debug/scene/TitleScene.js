@@ -63,7 +63,7 @@ var scene;
             this.btnText.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouch, this);
         };
         p.onTouch = function () {
-            scene.SceneManager.transfer(scene.MainScene);
+            scene.SceneManager.transfer(scene.StartScene);
         };
         return TitleScene;
     })(egret.DisplayObjectContainer);

@@ -9,5 +9,6 @@ module model {
         x:number;
         y:number;
         isShown:Boolean;
+        flag:Boolean;
     }
 }

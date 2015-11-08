@@ -11,16 +11,19 @@ var game_file_list = [
 	"bin-debug/DemoMain.js",
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
+	"bin-debug/model/creature.js",
 	"bin-debug/model/gridmap.js",
-	"bin-debug/model/gridmodel.js",
+	"bin-debug/model/GridModel.js",
 	"bin-debug/model/PerlinNoise.js",
 	"bin-debug/resource/ResourceManager.js",
 	"bin-debug/scene/BaseScene.js",
-	"bin-debug/scene/mainscene.js",
+	"bin-debug/scene/MainScene.js",
 	"bin-debug/scene/SceneManager.js",
+	"bin-debug/scene/startscene.js",
 	"bin-debug/scene/TitleScene.js",
 	"bin-debug/view/GridView.js",
-	"bin-debug/model/creature.js",
+	"bin-debug/scene/resultscene.js",
+	"bin-debug/scene/failscene.js",
 	//----auto game_file_list end----
 ];
 
@@ -49,7 +52,7 @@ egret_native.egretStart = function () {
         //以下为自动修改，请勿修改
         //----auto option start----
 		entryClassName: "Main",
-		frameRate: 48,
+		frameRate: 30,
 		scaleMode: "showAll",
 		contentWidth: 1280,
 		contentHeight: 720,
