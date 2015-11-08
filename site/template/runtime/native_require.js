@@ -12,18 +12,19 @@ var game_file_list = [
 	"bin-debug/LoadingUI.js",
 	"bin-debug/Main.js",
 	"bin-debug/model/creature.js",
-	"bin-debug/model/gridmap.js",
+	"bin-debug/model/GridMap.js",
 	"bin-debug/model/GridModel.js",
 	"bin-debug/model/PerlinNoise.js",
+	"bin-debug/model/RawMap.js",
 	"bin-debug/resource/ResourceManager.js",
 	"bin-debug/scene/BaseScene.js",
+	"bin-debug/scene/FailScene.js",
 	"bin-debug/scene/MainScene.js",
+	"bin-debug/scene/ResultScene.js",
 	"bin-debug/scene/SceneManager.js",
-	"bin-debug/scene/startscene.js",
+	"bin-debug/scene/StartScene.js",
 	"bin-debug/scene/TitleScene.js",
 	"bin-debug/view/GridView.js",
-	"bin-debug/scene/resultscene.js",
-	"bin-debug/scene/failscene.js",
 	//----auto game_file_list end----
 ];
 

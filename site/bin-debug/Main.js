@@ -97,7 +97,7 @@ var Main = (function (_super) {
         this.changeScene(nextScene);
     };
     p.changeScene = function (scene) {
-        console.log(scene);
+        //console.log(scene);
         if (this.currentScene != null) {
             this.currentScene.destroy();
             this.removeChild(this.currentScene);

@@ -24,11 +24,9 @@ var scene;
             this.removeChild(this.bg);
         };
         p.createBg = function () {
-            //this.bg = new egret.Bitmap(RES.getRes('titleBg'));
-            this.bg = new egret.Shape();
-            this.bg.graphics.beginGradientFill(egret.GradientType.LINEAR, [0x006ec0, 0x0064c2], [1, 1], [0, 255]);
-            this.bg.graphics.drawRect(0, 0, scene.SceneManager.stage.stageWidth, scene.SceneManager.stage.stageHeight);
-            this.bg.graphics.endFill();
+            this.bg = new egret.Bitmap(RES.getRes('bgImage'));
+            this.bg.width = scene.SceneManager.stage.stageWidth;
+            this.bg.height = scene.SceneManager.stage.stageHeight;
             this.addChild(this.bg);
         };
         p.createTitle = function () {
@@ -36,9 +34,10 @@ var scene;
             this.title.fontFamily = '\'Microsoft YaHei Light\', SimHei, sans-serif';
             this.title.textColor = 0xffffff;
             this.title.textAlign = 'center';
-            this.title.fontSize = 80;
-            this.title.text = 'Truth';
-            this.title.width = 200;
+            this.title.size = 80;
+            this.title.text = 'Hacking the Planet';
+            this.title.width = 800;
+            this.title.height = 100;
             this.title.x = (scene.SceneManager.stage.stageWidth - this.title.width) / 2;
             this.title.y = 100;
             this.addChild(this.title);

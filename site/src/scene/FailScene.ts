@@ -10,8 +10,10 @@ module scene {
             this.count = 0;
             this.createLayout();
             this.touchEnabled = true;
-            this.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouch, this);
-            setTimeout(this.onTouch, 2000);
+            var _this = this;
+            setTimeout(function () {
+                _this.addEventListener(egret.TouchEvent.TOUCH_TAP, _this.onTouch, _this);
+            }, 100);
         }
 
         public update() {

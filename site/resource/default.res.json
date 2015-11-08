@@ -24,7 +24,7 @@
 	"groups": [
 		{
 			"name": "preload",
-			"keys": "bgImage,egretIcon,mapBg"
+			"keys": "bgImage,mapBg"
 		}
 	]
 }

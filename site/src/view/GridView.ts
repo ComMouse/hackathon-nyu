@@ -2,6 +2,8 @@
  * Created by ComMouse on 2015/11/8.
  */
 module view {
+    import SceneManager = scene.SceneManager;
+    import FailScene = scene.FailScene;
     export class GridView extends egret.DisplayObjectContainer {
         private grid;
         public _width;
@@ -20,10 +22,7 @@ module view {
             this.createText();
 
             this.touchEnabled = true;
-            this.addEventListener(egret.TouchEvent.TOUCH_TAP, function (event:egret.TouchEvent) {
-                this.grid.bioCount[0] += 2;
-                this.update();
-            }, this);
+            this.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouch, this);
         }
 
         private createBox():void {
@@ -49,9 +48,18 @@ module view {
             //this.addChild(this.text);
         }
 
+        public destroy():void {
+            this.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouch, this);
+            this.removeChild(this.box);
+        }
+
         private update():void {
             this.visible = this.grid.isShown || this.grid.flag;
             if (!this.visible) {
+                return;
+            }
+            if (this.grid.flag && this.grid.bioCount[1] > 0) {
+                SceneManager.transfer(FailScene);
                 return;
             }
             this.updateColor();
@@ -93,6 +101,18 @@ module view {
             } else {
                 return color;
             }
+        }
+
+        public onTouch(event:egret.TouchEvent) {
+            if (this.grid.flag)
+                return;
+            this.grid.allow = false;
+            var _this = this;
+            setTimeout(function () {
+                _this.grid.allow = true;
+            }, 1000);
+            this.grid.bioCount[0] += 5;
+            this.update();
         }
     }
 }

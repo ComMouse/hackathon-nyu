@@ -15,7 +15,7 @@ var scene;
             this.stage = this.main.stage;
         };
         SceneManager.transfer = function (scene) {
-            console.log(scene);
+            //console.log(scene);
             this.main.changeScene(scene);
         };
         return SceneManager;

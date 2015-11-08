@@ -7,19 +7,47 @@ module scene {
         private grids;
         private map;
         private timer;
+        private sound;
+        private channel;
 
         public create() {
             this.createGrids();
             this.createMap();
             this.registerListeners();
+            setTimeout(function () {
+                SceneManager.transfer(ResultScene);
+            }, 90 * 1000);
+            this.createMusic();
         }
 
         public update() {
-
         }
 
         public destroy() {
             this.timer.stop();
+            this.timer.removeEventListener(egret.TimerEvent.TIMER, this.onTimer, this);
+            if (this.channel) {
+                this.channel.stop();
+            }
+            for (var i = 0; i < this.grids.height; i++) {
+                for (var j = 0; j < this.grids.width; j++) {
+                    var item = this.map[i][j];
+                    item.destroy();
+                    this.removeChild(item);
+                }
+            }
+        }
+
+        private createMusic():void {
+            var sound:egret.Sound = new egret.Sound();
+            sound.addEventListener(egret.Event.COMPLETE, function loadOver(event:egret.Event) {
+                this.channel = sound.play();
+            }, this);
+            sound.addEventListener(egret.IOErrorEvent.IO_ERROR, function loadError(event:egret.IOErrorEvent) {
+                console.log("loaded error!");
+            }, this);
+            sound.load("resource/assets/bg.mp3");
+            this.sound = sound;
         }
 
         private createGrids():void {
@@ -40,7 +68,7 @@ module scene {
                     row.push(item);
                     item.x = j * w;
                     item.y = i * h;
-                    item.cacheAsBitmap = true;
+                    //item.cacheAsBitmap = true;
                     this.addChild(item);
                 }
                 this.map.push(row);
@@ -48,17 +76,22 @@ module scene {
         }
 
         private registerListeners():void {
-            this.timer = new egret.Timer(100);
-            this.timer.addEventListener(egret.TimerEvent.TIMER, function (event:egret.TimerEvent) {
-                this.grids.expand();
-                for (var i = 0; i < this.grids.height; i++) {
-                    var row = this.map[i];
-                    for (var j = 0; j < this.grids.width; j++) {
-                        row[j].update();
-                    }
+            var _this = this;
+            setTimeout(function () {
+                _this.timer = new egret.Timer(100);
+                _this.timer.addEventListener(egret.TimerEvent.TIMER, _this.onTimer, _this);
+                _this.timer.start();
+            }, 100);
+        }
+
+        private onTimer(event:egret.TimerEvent):void {
+            this.grids.expand();
+            for (var i = 0; i < this.grids.height; i++) {
+                var row = this.map[i];
+                for (var j = 0; j < this.grids.width; j++) {
+                    row[j].update();
                 }
-            }, this);
-            this.timer.start();
+            }
         }
     }
 }

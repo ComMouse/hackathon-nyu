@@ -17,7 +17,7 @@ module scene {
         }
 
         public static transfer(scene):void {
-            console.log(scene);
+            //console.log(scene);
             this.main.changeScene(scene);
         }
     }

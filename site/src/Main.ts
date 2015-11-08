@@ -113,7 +113,7 @@ class Main extends egret.DisplayObjectContainer {
     }
 
     public changeScene(scene):void {
-        console.log(scene);
+        //console.log(scene);
         if (this.currentScene != null) {
             this.currentScene.destroy();
             this.removeChild(this.currentScene);

@@ -11,6 +11,13 @@ module model {
         suitEnv:Array<number>;
         limit:Array<number>;
         timer:Array<number>;
+        _flag:Array<number>;
+        allow:Boolean;
+
+        playEffect:Boolean;
+        sound;
+
+        start:Date;
 
         static UP = 8;
         static DOWN = 2;
@@ -20,13 +27,22 @@ module model {
         constructor(width, height) {
             this.width = width;
             this.height = height;
-            this.growRate = [1.1, 1.3];
+            this.growRate = [1.11, 1.12];
             this.total = [0, 0];
-            this.limit = [10000, 10000000];
+            this.limit = [10000, 10000];
             this.timer = [0, 0];
             this.suitEnv = [0, 0];
+            this.allow = false;
+            this.playEffect = false;
 
             this.initArray();
+
+            var sound:egret.Sound = new egret.Sound();
+            sound.addEventListener(egret.IOErrorEvent.IO_ERROR, function loadError(event:egret.IOErrorEvent) {
+                console.log("loaded error!");
+            }, this);
+            sound.load("resource/assets/pair.wav");
+            this.sound = sound;
         }
 
         public center(x, y, type):void {
@@ -41,9 +57,10 @@ module model {
                 var row = [];
                 for (var j = 0; j < this.width; j++) {
                     var grid = new GridModel();
+                    //grid.envLv = rawMap[j][i];
                     if (i > 0 && j > 0) {
                         grid.envLv = Math.min(Math.max(Math.round((this.grids[i - 1][j].envLv + row[j - 1].envLv) / 2 + Math.round(Math.random()) * 4 - 1), -10), 10);
-                            //console.log(grid.envLv);
+                        //console.log(grid.envLv);
                     } else {
                         grid.envLv = Math.round(Math.random() * 20) - 10;
                     }
@@ -52,7 +69,6 @@ module model {
                     grid.x = j;
                     grid.y = i;
                     grid.flag = false;
-                    grid.isShown = false;
                     row.push(grid);
                 }
                 this.grids.push(row);
@@ -89,11 +105,11 @@ module model {
             }
             this.growRate[0] = this.limit[0] / this.total[0] > 1 ? Math.sqrt(this.growRate[0]) : this.limit[0] / this.total[0];
             this.growRate[1] = this.limit[1] / this.total[1] > 1 ? Math.sqrt(this.growRate[1]) : this.limit[1] / this.total[1];
-            if (this.total[0] > this.limit[0] && ++this.timer[0] > 50) {
+            if (this.total[0] > this.limit[0] && ++this.timer[0] > 30) {
                 this.timer[0] = 0;
                 this.limit[0] *= 1.1;
             }
-            if (this.total[1] > this.limit[1] && ++this.timer[1] > 20) {
+            if (this.total[1] > this.limit[1] && ++this.timer[1] > 10) {
                 this.timer[1] = 0;
                 this.limit[1] *= 1.1;
             }
@@ -140,10 +156,11 @@ module model {
                 return;
             }
             if (newGrid.bioCount[0] <= grid.bioCount[0]) {
+                var rate = (dir == GridMap.DOWN || dir == GridMap.RIGHT) ? 0.5 : 2;
                 newGrid.newCount[0] += Math.round(grid.bioCount[0] * 0.1 * (Math.random() * 0.1 + 0.95));
             }
             if (newGrid.bioCount[1] <= grid.bioCount[1]) {
-                var rate = (dir == GridMap.UP || dir == GridMap.LEFT) ? 2 : 1;
+                var rate = (dir == GridMap.UP || dir == GridMap.LEFT) ? 2 : 0.5;
                 newGrid.newCount[1] += Math.round(grid.bioCount[1] * 0.2 * rate * (Math.random() * 0.2 + 0.9));
             }
             //grid.newCount -= Math.round(grid.bioCount * 0.4);
@@ -166,11 +183,11 @@ module model {
 
             var liveRate = this.suitEnv[1];
             var rate = 1;
-            if (Math.abs(grid.envLv - liveRate) > 4) {
+            if (Math.abs(grid.envLv - liveRate) > 6) {
                 rate = 0;
             } else if (Math.abs(grid.envLv - liveRate) > 1) {
                 //console.log();
-                rate = Math.exp(-Math.pow(1.4, liveRate - grid.envLv));
+                rate = Math.exp(-Math.pow(1.5, liveRate - grid.envLv));
                 rate = Math.min(rate, 1);
                 //console.log(rate);
             } else {
@@ -184,12 +201,24 @@ module model {
             grid.newCount[0] = 0;
             grid.bioCount[1] += grid.newCount[1];
             grid.newCount[1] = 0;
-            if (grid.bioCount[0] > grid.bioCount[1]) {
-                grid.bioCount[0] -= grid.bioCount[1];
-                grid.bioCount[1] = 0;
-            } else {
-                grid.bioCount[1] -= grid.bioCount[0];
-                grid.bioCount[0] = 0;
+            if ((grid.bioCount[0] & grid.bioCount[1]) != 0) {
+                if (grid.bioCount[0] > grid.bioCount[1]) {
+                    grid.bioCount[0] -= grid.bioCount[1];
+                    grid.bioCount[1] = 0;
+                } else {
+                    grid.bioCount[1] -= grid.bioCount[0];
+                    grid.bioCount[0] = 0;
+                }
+
+                if (!this.playEffect) {
+                    this.playEffect = true;
+                    this.sound.play(0, 1);
+
+                    var _this = this;
+                    setTimeout(function () {
+                        _this.playEffect = false;
+                    }, 200);
+                }
             }
         }
 
@@ -227,6 +256,7 @@ module model {
 
         private flag(x, y):void {
             this.grids[y][x].flag = true;
+            this._flag = [x, y];
         }
     }
 }
