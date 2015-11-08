@@ -11,6 +11,7 @@ module scene {
         private channel;
 
         public create() {
+            this.visible = false;
             this.createGrids();
             this.createMap();
             this.registerListeners();
@@ -85,6 +86,7 @@ module scene {
         }
 
         private onTimer(event:egret.TimerEvent):void {
+            this.visible = true;
             this.grids.expand();
             for (var i = 0; i < this.grids.height; i++) {
                 var row = this.map[i];

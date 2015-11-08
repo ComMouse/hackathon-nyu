@@ -10,6 +10,7 @@ var scene;
         }
         var d = __define,c=MainScene;p=c.prototype;
         p.create = function () {
+            this.visible = false;
             this.createGrids();
             this.createMap();
             this.registerListeners();
@@ -77,6 +78,7 @@ var scene;
             }, 100);
         };
         p.onTimer = function (event) {
+            this.visible = true;
             this.grids.expand();
             for (var i = 0; i < this.grids.height; i++) {
                 var row = this.map[i];
