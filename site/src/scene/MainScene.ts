@@ -15,27 +15,16 @@ module scene {
         }
 
         public update() {
+
         }
 
         public destroy() {
             this.timer.stop();
         }
 
-        public a() {
-            this.grids.expand();
-            for (var i = 0; i < this.grids.map.length; i++) {
-                var row = this.grids.map[i];
-                var str = '';
-                for (var j = 0; j < row.length; j++) {
-                    str += row[j].bioCount + '\t\t';
-                }
-                //console.log(str);
-            }
-        }
-
         private createGrids():void {
-            this.grids = new model.GridMap(80, 45);
-            this.grids.center(40, 22);
+            this.grids = new model.GridMap(160, 90);
+            this.grids.center(Math.floor(Math.random() * 160), Math.floor(Math.random() * 90));
         }
 
         private createMap():void {

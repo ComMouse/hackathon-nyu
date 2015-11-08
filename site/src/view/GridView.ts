@@ -8,14 +8,22 @@ module view {
         public _height;
         private box;
         private text;
+        private _color;
 
         public constructor(grid, w, h) {
             super();
             this.grid = grid;
             this._width = w;
             this._height = h;
+            this._color = 0;
             this.createBox();
             this.createText();
+
+            this.touchEnabled = true;
+            this.addEventListener(egret.TouchEvent.TOUCH_TAP, function (event:egret.TouchEvent) {
+                this.grid.bioCount += 2;
+                this.update();
+            }, this);
         }
 
         private createBox():void {
@@ -38,24 +46,40 @@ module view {
             this.text.x = 4;
             this.text.y = 6;
 
-            this.addChild(this.text);
+            //this.addChild(this.text);
         }
 
         private update():void {
-            //this.updateColor();
-            this.text.text = this.grid.bioCount;
+            this.visible = this.grid.isShown;
+            if (!this.visible) {
+                return;
+            }
+            this.updateColor();
+            //this.text.text = this.grid.bioCount;
         }
 
         private updateColor():void {
-            this.box.graphics.clear();
-            this.box.graphics.beginFill(this.getColor(this.grid));
-            console.log(this.getColor(this.grid));
-            this.box.graphics.drawRect(0, 0, this._width, this._height);
-            this.box.graphics.endFill();
+            var color = this.getColor(this.grid);
+            if (color != this._color) {
+                console.log('Repaint!');
+                this.box.graphics.clear();
+                this.box.graphics.beginFill(color);
+                //console.log(this.getColor(this.grid));
+                this.box.graphics.drawRect(0, 0, this._width, this._height);
+                this.box.graphics.endFill();
+                this._color = color;
+            }
         }
 
         private getColor(grid) {
-            return Math.round((0x0099ff) * ((grid.envLv + 10) / 20) + (0x00ff99) * ((10 - grid.envLv) / 20));
+            var alpha = (grid.envLv + 10) / 20;
+            var color = Math.round((0x009900) * alpha + (0x0055ff) * (1 - alpha));
+            if (grid.bioCount > 1) {
+                var alpha = Math.min(grid.bioCount / 10000, 1);
+                return Math.round(0xff0000 * alpha + 0xFF7373 * (1 - alpha));
+            } else {
+                return color;
+            }
         }
     }
 }

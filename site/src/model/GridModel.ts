@@ -8,5 +8,6 @@ module model {
         newCount:number;
         x:number;
         y:number;
+        isShown:Boolean;
     }
 }

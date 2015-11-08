@@ -8,6 +8,9 @@ module model {
         height:number;
         growRate:number;
         total:number;
+        suitEnv:number;
+        limit:number;
+        timer:number;
 
         static UP = 8;
         static DOWN = 2;
@@ -17,14 +20,16 @@ module model {
         constructor(width, height) {
             this.width = width;
             this.height = height;
-            this.growRate = 1.2;
+            this.growRate = 1.1;
             this.total = 0;
+            this.limit = 10000;
+            this.timer = 0;
 
             this.initArray();
         }
 
         public center(x, y):void {
-            this.grids[y][x].envLv = 5;
+            this.suitEnv = this.grids[y][x].envLv;
             this.grids[y][x].bioCount = 1;
             this.total = 1;
         }
@@ -35,7 +40,12 @@ module model {
                 var row = [];
                 for (var j = 0; j < this.width; j++) {
                     var grid = new GridModel();
-                    grid.envLv = Math.round(Math.random() * 20) - 10;
+                    if (i > 0 && j > 0) {
+                        grid.envLv = Math.min(Math.max(Math.round((this.grids[i - 1][j].envLv + row[j - 1].envLv) / 2 + Math.round(Math.random()) * 4 - 1), -10), 10);
+                            //console.log(grid.envLv);
+                    } else {
+                        grid.envLv = Math.round(Math.random() * 20) - 10;
+                    }
                     grid.bioCount = 0;
                     grid.newCount = 0;
                     grid.x = j;
@@ -54,7 +64,7 @@ module model {
             this.total = 0;
             for (var i = 0; i < this.height; i++) {
                 for (var j = 0; j < this.width; j++) {
-                    this.updateLiveCount(this.grids[i][j]);
+                    this.grids[i][j].isShown = false;
                 }
             }
             for (var i = 0; i < this.height; i++) {
@@ -65,10 +75,19 @@ module model {
             for (var i = 0; i < this.height; i++) {
                 for (var j = 0; j < this.width; j++) {
                     this.updateNewCount(this.grids[i][j]);
+                }
+            }
+            for (var i = 0; i < this.height; i++) {
+                for (var j = 0; j < this.width; j++) {
+                    this.updateLiveCount(this.grids[i][j]);
                     this.total += this.grids[i][j].bioCount;
                 }
             }
-            this.growRate = 1000 / this.total > 1 ? Math.sqrt(this.growRate) : 1000 / this.total;
+            this.growRate = this.limit / this.total > 1 ? Math.sqrt(this.growRate) : this.limit / this.total;
+            if (this.total > this.limit && ++this.timer > 50) {
+                this.limit *= 1.1;
+            }
+            //this.growRate = Math.sqrt(this.growRate);
         }
 
         private expandGrid(grid):void {
@@ -76,6 +95,32 @@ module model {
             this.expandGridDir(grid, GridMap.LEFT);
             this.expandGridDir(grid, GridMap.DOWN);
             this.expandGridDir(grid, GridMap.RIGHT);
+
+            if (grid.bioCount > 0) {
+                grid.isShown = true;
+                this.expandGridShown(grid, 5);
+            }
+        }
+
+        private expandGridShown(grid, recursionCount = 0):void {
+            if (!grid) return;
+            grid.isShown = true;
+            var newGrid1 = this.moveGrid(grid, GridMap.UP);
+            if (newGrid1 && recursionCount > 0 && newGrid1.bioCount == 0) {
+                this.expandGridShown(newGrid1, recursionCount - 1);
+            }
+            var newGrid2 = this.moveGrid(grid, GridMap.LEFT);
+            if (newGrid2 && recursionCount > 0 && newGrid2.bioCount == 0) {
+                this.expandGridShown(newGrid2, recursionCount - 1);
+            }
+            var newGrid3 = this.moveGrid(grid, GridMap.DOWN);
+            if (newGrid3 && recursionCount > 0 && newGrid3.bioCount == 0) {
+                this.expandGridShown(newGrid3, recursionCount - 1);
+            }
+            var newGrid4 = this.moveGrid(grid, GridMap.RIGHT);
+            if (newGrid4 && recursionCount > 0 && newGrid4.bioCount == 0) {
+                this.expandGridShown(newGrid4, recursionCount - 1);
+            }
         }
 
         private expandGridDir(grid, dir:Number):void {
@@ -89,13 +134,17 @@ module model {
         }
 
         private updateLiveCount(grid:GridModel):void {
-            var liveRate = 1;
+            var liveRate = this.suitEnv;
             var rate = 1;
-            if (grid.envLv < liveRate) {
+            if (Math.abs(grid.envLv - liveRate) > 2) {
+                rate = 0;
+            } else if (Math.abs(grid.envLv - liveRate) > 1) {
                 //console.log();
                 rate = Math.exp(-Math.pow(2, liveRate - grid.envLv));
-                rate = Math.min(rate, 0);
+                rate = Math.min(rate, 1);
                 //console.log(rate);
+            } else {
+                rate = 2 * (2 - Math.abs(grid.envLv - liveRate));
             }
             grid.bioCount = Math.ceil(grid.bioCount * this.growRate * rate * (Math.random() * 0.1 + 0.95));
         }
@@ -106,6 +155,9 @@ module model {
         }
 
         public moveGrid(grid, dir:Number):GridModel {
+            if (grid == null) {
+                return null;
+            }
             switch (dir) {
                 case GridMap.UP:
                     if (grid.y == 0) {

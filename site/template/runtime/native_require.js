@@ -13,6 +13,7 @@ var game_file_list = [
 	"bin-debug/Main.js",
 	"bin-debug/model/GridMap.js",
 	"bin-debug/model/GridModel.js",
+	"bin-debug/model/PerlinNoise.js",
 	"bin-debug/resource/ResourceManager.js",
 	"bin-debug/scene/BaseScene.js",
 	"bin-debug/scene/MainScene.js",

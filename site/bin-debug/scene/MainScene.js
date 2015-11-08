@@ -19,19 +19,9 @@ var scene;
         p.destroy = function () {
             this.timer.stop();
         };
-        p.a = function () {
-            this.grids.expand();
-            for (var i = 0; i < this.grids.map.length; i++) {
-                var row = this.grids.map[i];
-                var str = '';
-                for (var j = 0; j < row.length; j++) {
-                    str += row[j].bioCount + '\t\t';
-                }
-            }
-        };
         p.createGrids = function () {
-            this.grids = new model.GridMap(80, 45);
-            this.grids.center(40, 22);
+            this.grids = new model.GridMap(160, 90);
+            this.grids.center(Math.floor(Math.random() * 160), Math.floor(Math.random() * 90));
         };
         p.createMap = function () {
             var w = scene.SceneManager.stage.stageWidth / this.grids.width;
