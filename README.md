@@ -2,11 +2,15 @@
 
 Our repo for Hack Shanghai 2015. This is a creatrue simulating game which is intended to explain the origin of creatures and enjoy the fun of invading between two species. Hope you'll enjoy it!
 
+## Demo
+
+A demo is here: http://commouse.github.io/hackathon-nyu/
+
 ## How To Play
 
 Protect the flag which is a white dot in the center of your planet. The evil creature at the bottom right corner of your screen. Click on any grid you can see and a seed will be generated in this grid and start reproducing. You need to generate as more creatures as you can to protect the flag from being occupied from the evil ones.
 
-After 90 seconds, you win!
+You need to defense 90 seconds to win this game.
 
 ## Build
 
