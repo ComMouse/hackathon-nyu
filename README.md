@@ -1,6 +1,6 @@
 # Hacking the Planet
 
-Our repo for Hack Shanghai 2015. This is a creatrue simulating game which is intended to explain the origin of creatures and enjoy the fun of invading between two specied. Hope you'll enjoy it!
+Our repo for Hack Shanghai 2015. This is a creatrue simulating game which is intended to explain the origin of creatures and enjoy the fun of invading between two species. Hope you'll enjoy it!
 
 ## How To Play
 
