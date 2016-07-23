@@ -28,7 +28,7 @@ var game_file_list = [
 	//----auto game_file_list end----
 ];
 
-var window = {};
+var window = this;
 
 egret_native.setSearchPaths([""]);
 
@@ -58,8 +58,8 @@ egret_native.egretStart = function () {
 		contentWidth: 1280,
 		contentHeight: 720,
 		showPaintRect: false,
-		showFPS: false,
-		fpsStyles: "x:0,y:0,size:30,textColor:0x00c200,bgAlpha:0.9",
+		showFPS: true,
+		fpsStyles: "x:0,y:0,size:12,textColor:0xffffff,bgAlpha:0.5",
 		showLog: false,
 		logFilter: "",
 		maxTouches: 2,

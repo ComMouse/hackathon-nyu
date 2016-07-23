@@ -45,6 +45,8 @@ class Main extends egret.DisplayObjectContainer {
         //Config to load process interface
         this.loadingView = new LoadingUI();
         this.stage.addChild(this.loadingView);
+        console.log(this.stage);
+        this.stage.dirtyRegionPolicy = egret.DirtyRegionPolicy.OFF;
 
         //initiate Resource loading library
         RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
